@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <link rel="icon" href="/assets/media/icon.svg" sizes="any" type="image/svg+xml" />
+    <link rel="stylesheet" href="/assets/css/styles.min.css" />
+    <% if (IS_PWA && CACHE_PAGES.filter((e) => e.endsWith(req.params [0] || '')).length) { %> 
+      <meta name="turbolinks-cache-control" content="no-cache">
+    <%}%>
+    <% if (IS_PWA) {%>
+      <script src="/assets/boot.js"></script>
+    <% } %>
+    <script src="/assets/application.js"></script>
+    <%- head %>
+    <title><%- page.title %></title>
+  </head>
+  <body>
+      <style data-ssr-jss><%- stylesheet %></style>
+    <%- output %>
+    <script>document.__GLOBAL_SHARED_STATE = <%- Global %>;</script> 
+    <script type="data/json" id="globals"><%- req.session.globals %></script>
+    <script type="data/json" id="state"><%- state %></script>
+    <script type="data/json" id="attributes"><%- shared %></script>
+  </body>
+</html>

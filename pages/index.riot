@@ -1,0 +1,63 @@
+<index-page>
+  <div class="home-header" if={!state.username}>
+      <a href="/login">
+        Sign In
+      </a>
+      |
+      <a href="/register">
+        Sing Up
+      </a>
+  </div>
+  <div class="home-header" if={state.username}>
+      Welcome, 
+      <a href="/login">
+        {state.username}!
+      </a>
+  </div>
+  <div style="text-align: center; margin-top: 25vh;">
+    
+    <img src="/assets/media/logo.svg" style="height: 80px;"/>
+    
+    <div>
+      <a href="/examples" class="btn btn-lg btn-hero">
+        Examples
+      </a>
+    </div>
+    
+    <p class="home-links">
+      <a href="https://github.com/nesterow/frontless" target="_blank">
+        GitHub
+      </a>
+      |
+      <a href="">
+        Docs
+      </a>
+    </p>
+
+  </div>
+
+  <script>
+    import client from 'client'
+
+    export default () => ({
+      layout: 'base',
+      observe: ['title'],
+      title: "Home",
+      onMounted() {
+        this.$store.dispatch({
+          type: "TITLE",
+          title: "Index page"
+        })
+      },
+      onAction(){
+        this.title = this.$state.title;
+        this.update()
+      },
+      onRendered(){
+        this.update({
+          username: this.globals.username
+        })
+      }
+    })
+  </script>
+</index-page>

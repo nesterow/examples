@@ -1,0 +1,89 @@
+<login-page>
+  <div class="form-header">
+    <a href="/">
+      Home
+    </a>
+  </div>
+  <div class="center-block">
+    <form class="form-block form-horizontal {state.loading && 'loading'}" onsubmit={ submit }>
+      
+      <h2>
+        <img src="/assets/media/logo.svg" class="logo"/>
+      </h2>
+      <div class="form-group {state.errors.username && 'has-error'}">
+        <input onfocus={reset} class="form-input" name="username" type="text" placeholder="Login" autocomplete="off">
+        <p class="form-input-hint" each={error in state.errors.username}>{error}</p>
+      </div>
+      <div class="form-group {state.errors.password && 'has-error'}">
+        <input onfocus={reset} class="form-input" name="password" type="password" placeholder="Password" autocomplete="off">
+        <p class="form-input-hint" each={error in state.errors.password}>{error}</p>
+      </div>
+      <div class="form-group">
+          <button type="submit" class="btn btn-block">Sign In</button>
+          <div class="links">
+            <a class="form-link">
+              Forgot Password?
+            </a> |
+            <a class="form-link" href="/register">
+              Sing Up
+            </a>
+          </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+
+    import {serializeForm} from '@frontless/core'
+    import validate from 'validators/login.validate'
+
+    export default () => ({
+      state: {
+        errors:{},
+        success: false,
+      },
+      onRendered(){
+        if (this.globals.authenticated) {
+          this.redirect('/profile')
+        }
+      },
+      submit(ev) {
+        ev.preventDefault()
+        const data = serializeForm(ev.target)
+        
+        const errors = validate(data)
+        if (errors) {
+          return this.update({
+            errors,
+          })
+        }
+        this.client.authenticate({
+          strategy: 'local',
+          username: data.username,
+          password: data.password
+        }).
+        
+        then((res) => {
+         return this.client.passport.verifyJWT(res.accessToken)
+        }).
+        
+        then((res) => {
+          this.redirect('/profile')
+        }).
+
+        catch((err) => {  
+          console.log(err)
+        })
+
+      },
+
+      reset(){
+        this.update({
+          errors:{}
+        })
+      }
+    })
+
+  </script>
+  
+</login-page>
