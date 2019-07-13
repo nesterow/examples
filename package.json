@@ -6,8 +6,8 @@
   "author": "Anton Nesterov <arch.nesterov@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "sandbox": "cross-env NODE_PATH=\".:./components:./node_modules\" NODE_ENV=production node index.js ./config/environ.env",
-    "start": "cross-env NODE_ENV=development gulp",
+    "start": "cross-env NODE_PATH=\".:./components:./node_modules\" NODE_ENV=production node index.js ./config/environ.env",
+    "start-gulp": "cross-env NODE_ENV=development gulp",
     "build": "cross-env NODE_ENV=production gulp build",
     "test": "cross-env NODE_PATH=\".:./components:./node_modules\" NODE_ENV=test mocha -r esm specs/*.js -not -path tests/e2e/*",
     "test:e2e": "cross-env NODE_PATH=\".:./components:./node_modules\" NODE_ENV=test mocha -r esm specs/e2e/*.js"
